@@ -1,8 +1,7 @@
-import { ButtonHTMLAttributes, ReactNode } from "react"
+import { ComponentPropsWithoutRef } from "react"
 import './button.styles.scss'
 
-type Props = {
-  children: ReactNode,
+interface Props extends ComponentPropsWithoutRef<"button"> {
   buttonType?: 'primary' | 'secondary' | 'inverted',
 }
 
@@ -12,20 +11,13 @@ const BUTTON_TYPE_CLASSES = {
   inverted: 'inverted-button',
 } 
 
-const Button = (
-  {
-    children,
-    buttonType='primary',
-  }: Props,
-  otherProps: ButtonHTMLAttributes<HTMLElement>,
-) => {
+const Button = (props: Props) => {
+  const { buttonType, ...otherProps } = props;
   return (
     <button 
-      className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`} 
+      className={`button-container ${BUTTON_TYPE_CLASSES[buttonType || 'primary']}`} 
       {...otherProps}
-    >
-      { children }
-    </button>
+    />
   )
 }
 export default Button
