@@ -5,6 +5,7 @@ import {
   getAuth, 
   GoogleAuthProvider,
   signInWithPopup, 
+  signInWithEmailAndPassword,
   User as FirebaseUser,
   UserCredential,
 } from 'firebase/auth'
@@ -33,6 +34,9 @@ export const createAuthUserWithEmailAndPassword = async (email: string, password
 }
 
 export const signInWithGooglePopup = (): Promise<UserCredential> => signInWithPopup(auth, googleProvider)
+export const signInWithUserEmailAndPassword = async (email: string, password: string): Promise<UserCredential> => {
+  return await signInWithEmailAndPassword(auth, email, password)
+}
 
 export const createUserDocumentFromAuth = async (
                                                   userAuth: FirebaseUser, 

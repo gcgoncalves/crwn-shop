@@ -1,38 +1,27 @@
-import React, { ChangeEventHandler } from 'react'
+import React, { ChangeEventHandler, ComponentPropsWithoutRef } from 'react'
 import './form-input.styles.scss'
 
-type Props = {
-  name?: string,
+interface Props extends ComponentPropsWithoutRef<"input"> {
+  name?: string
   label?: string,
-  value?: any,
-  type?: string
-  required?: boolean,
-  onChange?: ChangeEventHandler,
+  value?: string,
 }
 
 export default function FormInput(
-  {
-    name,
-    label,
-    value,
-    type='text',
-    required = false,
-    onChange = () => {},
-  }: Props,
+  props: Props,
 ) {
+  const { name, label, value, ...otherProps } = props
   return (
     <div className='group'>
       <input 
         className='form-input'
         name={ name } 
         value={ value } 
-        type={ type || 'text' } 
-        required={ required }
-        onChange={ onChange } 
+        {...otherProps}
       />
       { label && 
         <label 
-          className={`${value.length? 'shrink' : ''} form-input-label`} 
+          className={`${value?.length? 'shrink' : ''} form-input-label`} 
           htmlFor={ name }
         >
           { label }
