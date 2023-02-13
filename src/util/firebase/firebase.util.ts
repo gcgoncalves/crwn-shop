@@ -8,6 +8,9 @@ import {
   signInWithEmailAndPassword,
   User as FirebaseUser,
   UserCredential,
+  signOut,
+  onAuthStateChanged,
+  NextOrObserver,
 } from 'firebase/auth'
 import {
   doc,
@@ -37,6 +40,10 @@ export const signInWithGooglePopup = (): Promise<UserCredential> => signInWithPo
 export const signInWithUserEmailAndPassword = async (email: string, password: string): Promise<UserCredential> => {
   return await signInWithEmailAndPassword(auth, email, password)
 }
+
+export const signOutUser = () => signOut(auth)
+
+export const onAuthStateChangedListener = (callback: NextOrObserver<FirebaseUser | null>) => onAuthStateChanged(auth, callback)
 
 export const createUserDocumentFromAuth = async (
                                                   userAuth: FirebaseUser, 

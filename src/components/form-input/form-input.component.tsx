@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, ComponentPropsWithoutRef } from 'react'
+import React, { ComponentPropsWithoutRef } from 'react'
 import './form-input.styles.scss'
 
 interface Props extends ComponentPropsWithoutRef<"input"> {

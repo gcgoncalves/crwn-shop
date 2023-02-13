@@ -1,13 +1,18 @@
-import { ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, useState } from 'react'
-import { UserCredential } from 'firebase/auth'
+import { 
+  ChangeEvent, 
+  ChangeEventHandler, 
+  FormEvent, 
+  FormEventHandler, 
+  useState,
+} from 'react'
 import {
-  createUserDocumentFromAuth,
   signInWithGooglePopup,
   signInWithUserEmailAndPassword,
 } from "../../util/firebase/firebase.util"
 import { FirebaseError } from 'firebase/app'
 import Button from '../button/button.component'
 import FormInput from '../form-input/form-input.component'
+
 import './signin-form.styles.scss'
 
 type FormFields = {
@@ -24,9 +29,8 @@ const SigninForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { email, password }: FormFields = formFields
 
-  const logGoogleUserPopup = async () => {
-    const { user }: UserCredential = await signInWithGooglePopup()
-    await createUserDocumentFromAuth(user)
+  const signInWithGoogle = async () => {
+    await signInWithGooglePopup()
   }
 
   const resetFormFields = () => {
@@ -41,8 +45,7 @@ const SigninForm = () => {
   const handleSubmit: FormEventHandler = async (event: FormEvent) => {
     event.preventDefault()
     try {
-      const response: UserCredential = await signInWithUserEmailAndPassword(email, password)
-      console.log(response)
+      await signInWithUserEmailAndPassword(email, password)
       resetFormFields()
     } catch(error: any) {
       if (error instanceof FirebaseError) {
@@ -77,7 +80,7 @@ const SigninForm = () => {
         />
         <div className='buttons-container'>
           <Button type='submit'>Sign in</Button>
-          <Button type='button' buttonType='secondary' onClick={logGoogleUserPopup}>Google Sign in</Button>
+          <Button type='button' buttonType='secondary' onClick={signInWithGoogle}>Google Sign in</Button>
         </div>
       </form>
     </div>

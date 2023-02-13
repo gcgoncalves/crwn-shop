@@ -1,8 +1,18 @@
 import { User as FirebaseUser, UserCredential } from 'firebase/auth'
-import { ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, useState } from 'react'
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../util/firebase/firebase.util'
+import { 
+  ChangeEvent, 
+  ChangeEventHandler, 
+  FormEvent, 
+  FormEventHandler, 
+  useState, 
+} from 'react'
+import { 
+  createAuthUserWithEmailAndPassword, 
+  createUserDocumentFromAuth,
+} from '../../util/firebase/firebase.util'
 import Button from '../button/button.component'
 import FormInput from '../form-input/form-input.component'
+
 import './signup-form.styles.scss'
 
 type FormFields = {
