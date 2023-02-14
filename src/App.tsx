@@ -4,6 +4,7 @@ import CategoryList from "./components/category-list/category-list.component";
 import Home from "./routes/home/home.component";
 import ProductDetails from "./routes/product-details/product-details.component";
 import Authentication from "./routes/authentication/authentication.component";
+import Shop from "./routes/shop/shop.component";
 
 const startingCategories: Category[] = [
   {
@@ -38,6 +39,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Home />}>
         <Route index element={<CategoryList categories={startingCategories} />} />
+        <Route path='/shop' element={<Shop />} />
         <Route path='/product' element={<ProductDetails />} />
         <Route path='/auth' element={<Authentication />} />
       </Route>

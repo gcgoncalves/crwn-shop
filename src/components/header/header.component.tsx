@@ -20,13 +20,13 @@ const Header = () => {
         <CrwnLogo />
       </Link>
       <div className="nav-links-container">
+        <Link className="nav-link" to='/shop'>SHOP</Link>
         <Link className="nav-link" to='/product'>PRODUCT</Link>
         { 
           currentUser ? 
           ( <span className="nav-link" onClick={ signOutHandler }>SIGN OUT</span> )
           : ( <Link className="nav-link" to='/auth'>SIGN IN</Link> )
         }
-        
       </div>
     </div>
   )
