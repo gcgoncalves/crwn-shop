@@ -1,14 +1,27 @@
 import { Link } from "react-router-dom"
-
-import './header.styles.scss'
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg"
-import { useContext } from "react"
+import { Dispatch, SetStateAction, useContext, useState } from "react"
 import { UserContext } from "../../contexts/user.context"
 import { User as FirebaseUser } from "firebase/auth"
 import { signOutUser } from "../../util/firebase/firebase.util"
+import CartDropdown from "../cart-dropdown/cart-dropdown.component"
+
+import './header.styles.scss'
+import CartIcon from "../cart-icon/cart-icon.component"
 
 const Header = () => {
   const { currentUser }: { currentUser: FirebaseUser | null } = useContext(UserContext)
+  const [
+    cartOpen, 
+    setCartOpen
+  ]: [
+    boolean,
+    Dispatch<SetStateAction<boolean>>
+  ] = useState(false)
+
+
+  const openCart = () => setCartOpen(true)
+  const closeCart = () => setCartOpen(false)
 
   const signOutHandler = async () => {
     await signOutUser()
@@ -27,7 +40,9 @@ const Header = () => {
           ( <span className="nav-link" onClick={ signOutHandler }>SIGN OUT</span> )
           : ( <Link className="nav-link" to='/auth'>SIGN IN</Link> )
         }
+        <CartIcon onClick={cartOpen? closeCart : openCart} />
       </div>
+      { cartOpen && <CartDropdown /> }
     </div>
   )
 }
