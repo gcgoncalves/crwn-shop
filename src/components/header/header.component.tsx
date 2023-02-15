@@ -8,17 +8,17 @@ import CartDropdown from "../cart-dropdown/cart-dropdown.component"
 
 import './header.styles.scss'
 import CartIcon from "../cart-icon/cart-icon.component"
+import { CartContext } from "../../contexts/cart.context"
 
 const Header = () => {
   const { currentUser }: { currentUser: FirebaseUser | null } = useContext(UserContext)
-  const [
+  const { 
     cartOpen, 
-    setCartOpen
-  ]: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>
-  ] = useState(false)
-
+    setCartOpen 
+  }: { 
+    cartOpen: boolean, 
+    setCartOpen: Dispatch<SetStateAction<boolean>>,
+  } = useContext(CartContext)
 
   const openCart = () => setCartOpen(true)
   const closeCart = () => setCartOpen(false)

@@ -16,6 +16,8 @@ interface CartContextType {
   setCartOpen: Dispatch<SetStateAction<boolean>>,
   cartItems: CartItem[],
   addItemToCart: Function,
+  removeItemFromCart: Function,
+  removeProductFromCart: Function,
 }
 
 const addItemToCartHandler = (product: Product, cartItems: CartItem[]): CartItem[] => {
@@ -36,11 +38,39 @@ const addItemToCartHandler = (product: Product, cartItems: CartItem[]): CartItem
   }
 }
 
+const removeItemFromCartHandler = (product: Product, cartItems: CartItem[]): CartItem[] => {
+  const cartItem: CartItem | undefined = cartItems.find((item: CartItem) => item.id === product.id)
+  if (cartItem) {
+    let newCartItems = cartItems.map(item => {
+      if (item.id === cartItem.id) {
+        item.quantity--
+      }
+      return item
+    })
+    return newCartItems.filter(item => {
+      if (item.quantity > 0) {
+        return item
+      }
+    })
+  }
+  return cartItems
+}
+
+const removeProductFromCartHandler = (product: Product, cartItems: CartItem[]): CartItem[] => {
+  return cartItems.filter(item => {
+    if (item.id !== product.id) {
+      return item
+    }
+  })
+}
+
 export const CartContext = createContext({
   cartOpen: false,
   setCartOpen: () => {},
   cartItems: [],
-  addItemToCart: () => {},  
+  addItemToCart: () => {},
+  removeItemFromCart: () => {},
+  removeProductFromCart: () => {},
 } as CartContextType) 
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -64,8 +94,23 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartItems(newCartItems)
   }
 
+  const removeItemFromCart = (product: Product) => {
+    const newCartItems: CartItem[] = removeItemFromCartHandler(product, cartItems)
+    setCartItems(newCartItems)
+  }
+
+  const removeProductFromCart = (product: Product) => {
+    const newCartItems: CartItem[] = removeProductFromCartHandler(product, cartItems)
+    setCartItems(newCartItems)
+  }
+
   const value: CartContextType = {
-    cartOpen, setCartOpen, cartItems, addItemToCart,
+    cartOpen, 
+    setCartOpen, 
+    cartItems, 
+    addItemToCart, 
+    removeItemFromCart,
+    removeProductFromCart,
   }
 
   return <CartContext.Provider value={ value }>{ children }</CartContext.Provider>
