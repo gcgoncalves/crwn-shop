@@ -1,5 +1,10 @@
-import Category from './category-item.interface'
 import './category-item.styles.scss'
+
+export interface Category {
+  id: number,
+  title: string,
+  imageUrl: string,
+}
 
 const CategoryItem = (props: {category: Category}) => {
   const category: Category  = props.category

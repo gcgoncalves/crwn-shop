@@ -1,6 +1,6 @@
 import { Routes,  Route } from "react-router-dom";
 import Authentication from "./routes/authentication/authentication.component";
-import Category from "./components/category-item/category-item.interface";
+import { Category } from "./components/category-item/category-item.component";
 import CategoryList from "./components/category-list/category-list.component";
 import Checkout from "./routes/checkout/checkout.component";
 import Home from "./routes/home/home.component";
@@ -40,7 +40,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Home />}>
         <Route index element={<CategoryList categories={startingCategories} />} />
-        <Route path='/shop' element={<Shop />} />
+        <Route path='/shop/*' element={<Shop />} />
         <Route path='/product' element={<ProductDetails />} />
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/auth' element={<Authentication />} />

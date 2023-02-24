@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg"
-import { Dispatch, SetStateAction, useContext, useState } from "react"
+import { Dispatch, SetStateAction, useContext } from "react"
 import { UserContext } from "../../contexts/user.context"
 import { User as FirebaseUser } from "firebase/auth"
 import { signOutUser } from "../../util/firebase/firebase.util"

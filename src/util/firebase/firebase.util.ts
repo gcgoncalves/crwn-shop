@@ -1,4 +1,4 @@
-import { FirebaseApp, initializeApp } from "firebase/app"
+import { initializeApp } from "firebase/app"
 import { 
   Auth,
   createUserWithEmailAndPassword,
@@ -19,18 +19,31 @@ import {
   DocumentReference,
   DocumentData,
   getFirestore,
+  collection,
+  writeBatch,
+  WriteBatch,
+  CollectionReference,
+  Firestore,
+  query,
+  getDocs,
+  Query,
+  QuerySnapshot,
 } from 'firebase/firestore'
+import Product from "../../interfaces/product.interface";
 import firebaseConfig from '../../firebase.config.json'
+import { CategoryCollection, CategoryMap } from "../../interfaces/category.interface"
 
-const firebaseApp: FirebaseApp = initializeApp(firebaseConfig)
+initializeApp(firebaseConfig)
 
 const googleProvider: GoogleAuthProvider = new GoogleAuthProvider()
 googleProvider.setCustomParameters({
   prompt: "select_account",
 })
-export const db = getFirestore()
-export const auth: Auth = getAuth()
+export const db: Firestore = getFirestore()
 
+// AUTHENTICATION
+
+export const auth: Auth = getAuth()
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string): Promise<UserCredential> => {
   return await createUserWithEmailAndPassword(auth, email, password)
@@ -69,4 +82,39 @@ export const createUserDocumentFromAuth = async (
   }
   
   return userDocumentReference
+}
+
+// DATABASE
+
+export const addCollectionOfCategories = async (collectionKey: string, Categories: CategoryCollection[]) => {
+  const collectionReference: CollectionReference<DocumentData> = collection(db, collectionKey)
+  const batch: WriteBatch = writeBatch(db)
+
+  Categories.forEach((category: CategoryCollection) => {
+    const documentReference = doc(collectionReference, category.title.toLowerCase())
+    batch.set(documentReference, category)
+  });
+
+  await batch.commit()
+  console.log('done')
+}
+
+export const getCategories = async () => {
+  const collectionReference: CollectionReference<DocumentData> = collection(db, 'categories')
+  const q: Query<DocumentData> = query(collectionReference)
+  
+  const snapshot: QuerySnapshot<DocumentData> = await getDocs(q)
+  const categoryMap: CategoryMap = snapshot.docs.reduce((accumulator, documentSnapshot) => {
+    const { 
+      title, 
+      items, 
+    }: {
+      title: string,
+      items: Product[],
+    } = documentSnapshot.data() as CategoryCollection
+    accumulator[title.toLowerCase()] = items
+    return accumulator
+  }, {} as CategoryMap)
+
+  return categoryMap
 }

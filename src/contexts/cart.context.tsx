@@ -5,7 +5,7 @@ import {
   SetStateAction, 
   useState 
 } from 'react'
-import { Product } from './product.context'
+import Product from "../interfaces/product.interface";
 
 export interface CartItem extends Product {
   quantity: number
@@ -48,9 +48,7 @@ const removeItemFromCartHandler = (product: Product, cartItems: CartItem[]): Car
       return item
     })
     return newCartItems.filter(item => {
-      if (item.quantity > 0) {
-        return item
-      }
+      return item.quantity > 0
     })
   }
   return cartItems
@@ -58,9 +56,7 @@ const removeItemFromCartHandler = (product: Product, cartItems: CartItem[]): Car
 
 const removeProductFromCartHandler = (product: Product, cartItems: CartItem[]): CartItem[] => {
   return cartItems.filter(item => {
-    if (item.id !== product.id) {
-      return item
-    }
+    return item.id !== product.id
   })
 }
 

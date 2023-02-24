@@ -1,4 +1,4 @@
-import { Product } from '../../contexts/product.context'
+import Product from "../../interfaces/product.interface";
 
 import './cart-item.styles.scss'
 
