@@ -1,7 +1,11 @@
 import React, { ComponentPropsWithoutRef } from 'react'
-import './form-input.styles.scss'
+import {
+  Group,
+  StyledLabel,
+  StyledInput,
+} from './form-input.styles'
 
-interface Props extends ComponentPropsWithoutRef<"input"> {
+export interface Props extends ComponentPropsWithoutRef<"input"> {
   name?: string
   label?: string,
   value?: string,
@@ -12,21 +16,26 @@ export default function FormInput(
 ) {
   const { name, label, value, ...otherProps } = props
   return (
-    <div className='group'>
-      <input 
+    <Group>
+      <StyledInput 
         className='form-input'
         name={ name } 
         value={ value } 
         {...otherProps}
       />
       { label && 
-        <label 
+        <StyledLabel 
+          shrink={Boolean(
+            value &&
+              typeof value === 'string' &&
+              value.length
+          )}
           className={`${value?.length? 'shrink' : ''} form-input-label`} 
           htmlFor={ name }
         >
           { label }
-        </label> 
+        </StyledLabel> 
       }
-    </div>
+    </Group>
   )
 }

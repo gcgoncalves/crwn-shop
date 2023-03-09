@@ -4,7 +4,16 @@ import {
   CartItem 
 } from '../../contexts/cart.context'
 
-import './checkout-item.styles.scss'
+import {
+  CheckoutItemContainer,
+  ImageContainer,
+  ProductName,
+  ProductPrice,
+  ProductQuantity,
+  ProductValue,
+  Arrow,
+  RemoveButton,
+} from './checkout-item.styles'
 
 interface Props {
   cartItem: CartItem 
@@ -18,25 +27,25 @@ const CheckoutItem = ({ cartItem }: Props) => {
   } = useContext(CartContext)
 
   return (
-    <div className='checkout-item-container'>
-      <div className='image-container'>
+    <CheckoutItemContainer>
+      <ImageContainer>
         <img src={ cartItem.imageUrl } alt={ `${cartItem.name}` } />
-      </div>
-      <span className='name'>
+      </ImageContainer>
+      <ProductName>
         { cartItem.name }
-      </span>
-      <div className='quantity'>
-          <span className='arrow' onClick={ () => removeItemFromCart(cartItem) }>&#10094;</span>
-          <span className='value'>{ cartItem.quantity }</span>
-          <span className='arrow' onClick={ () => addItemToCart(cartItem) }>&#10095;</span>
-      </div>
-      <span className='price'>
+      </ProductName>
+      <ProductQuantity>
+          <Arrow onClick={ () => removeItemFromCart(cartItem) }>&#10094;</Arrow>
+          <ProductValue>{ cartItem.quantity }</ProductValue>
+          <Arrow onClick={ () => addItemToCart(cartItem) }>&#10095;</Arrow>
+      </ProductQuantity>
+      <ProductPrice>
         { cartItem.price }
-      </span>
+      </ProductPrice>
       <div>
-        <span className='remove-button' onClick={ () => removeProductFromCart(cartItem) }>&#10005;</span>
+        <RemoveButton onClick={ () => removeProductFromCart(cartItem) }>&#10005;</RemoveButton>
       </div>
-    </div>
+    </CheckoutItemContainer>
   )
 }
 

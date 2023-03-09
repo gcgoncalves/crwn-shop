@@ -5,7 +5,7 @@ import { CategoryContext } from "../../contexts/category.context";
 import { CategoryMap } from "../../interfaces/category.interface";
 import Product from "../../interfaces/product.interface";
 
-import './category.styles.scss'
+import { CategoryTitle, ProductsContainer } from './category.styles'
 
 const Category = () => {
   const { categories }: { categories: CategoryMap } = useContext(CategoryContext)
@@ -26,14 +26,14 @@ const Category = () => {
 
   return (
     <React.Fragment>
-      <h2 className="category-title">{ category?.toUpperCase() }</h2>
-      <div className="products-container">
+      <CategoryTitle>{ category?.toUpperCase() }</CategoryTitle>
+      <ProductsContainer>
         { products &&
           products.map((product: Product) => 
             <ProductCard key={ product.id } product={ product } />
           )
         }
-      </div>
+      </ProductsContainer>
     </React.Fragment>
   )
 }

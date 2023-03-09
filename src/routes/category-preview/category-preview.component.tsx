@@ -5,7 +5,7 @@ import { CategoryContext } from "../../contexts/category.context";
 import { CategoryMap } from "../../interfaces/category.interface";
 import Product from "../../interfaces/product.interface";
 
-import './category-preview.styles.scss'
+import { ProductsContainer } from './category-preview.styles'
 
 const CategoryPreview = () => {
   const { categories }: { categories: CategoryMap } = useContext(CategoryContext)
@@ -17,7 +17,7 @@ const CategoryPreview = () => {
       categoryNames.map((categoryName: string) => 
         <React.Fragment key={ categoryName }>
           <h2><Link to={ `${categoryName}` }>{ categoryName.toUpperCase() }</Link></h2>
-          <div className="products-container">
+          <ProductsContainer>
             {
               categories[categoryName]
                 .slice(0, 4)
@@ -25,7 +25,7 @@ const CategoryPreview = () => {
                   <ProductCard key={ product.id } product={ product } />
                 )
             }
-          </div>
+          </ProductsContainer>
         </React.Fragment>
       )
     }

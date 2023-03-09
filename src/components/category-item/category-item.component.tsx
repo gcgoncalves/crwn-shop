@@ -1,4 +1,10 @@
-import './category-item.styles.scss'
+import {
+  CategoryContainer,
+  BackgroundImage,
+  CategoryBodyContainer,
+  StyledH2,
+  StyledP,
+} from './category-item.styles'
 
 export interface Category {
   id: number,
@@ -10,16 +16,13 @@ const CategoryItem = (props: {category: Category}) => {
   const category: Category  = props.category
 
   return (
-    <div className="category-container">
-      <div 
-        className='background-image'
-        style={{backgroundImage: `url(${category.imageUrl})`}} 
-      />
-      <div className="category-body-container">
-        <h2>{category.title}</h2>
-        <p>shop now</p>
-      </div>
-    </div>
+    <CategoryContainer>
+      <BackgroundImage imageUrl={ category.imageUrl }/>
+      <CategoryBodyContainer>
+        <StyledH2>{category.title}</StyledH2>
+        <StyledP>Shop now</StyledP>
+      </CategoryBodyContainer>
+    </CategoryContainer>
   )
 }
 

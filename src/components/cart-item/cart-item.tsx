@@ -1,6 +1,11 @@
 import Product from "../../interfaces/product.interface";
 
-import './cart-item.styles.scss'
+import {
+  CartItemContainer,
+  StyledImage,
+  ItemDetails,
+  ProductName,
+} from './cart-item.styles'
 
 type Props = {
   product: Product,
@@ -9,12 +14,12 @@ type Props = {
 
 export default function CartItem({ product, quantity }: Props) {
   return (
-    <div className='cart-item-container'>
-      <img src={ product.imageUrl } alt={ `${product.name}` } />
-      <div className='item-details'>
-        <h2 className='name'>{ product.name }</h2>
+    <CartItemContainer>
+      <StyledImage src={ product.imageUrl } alt={ `${product.name}` } />
+      <ItemDetails>
+        <ProductName>{ product.name }</ProductName>
         <span>{ quantity } X ${ product.price }</span>
-      </div>
-    </div>
+      </ItemDetails>
+    </CartItemContainer>
   )
 }

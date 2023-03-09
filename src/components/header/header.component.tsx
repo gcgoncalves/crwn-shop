@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom"
-import { ReactComponent as CrwnLogo } from "../../assets/crown.svg"
 import { Dispatch, SetStateAction, useContext } from "react"
 import { UserContext } from "../../contexts/user.context"
 import { User as FirebaseUser } from "firebase/auth"
 import { signOutUser } from "../../util/firebase/firebase.util"
 import CartDropdown from "../cart-dropdown/cart-dropdown.component"
-
-import './header.styles.scss'
 import CartIcon from "../cart-icon/cart-icon.component"
 import { CartContext } from "../../contexts/cart.context"
+
+import {
+  HeaderContainer,
+  Logo,
+  NavLinkContainer,
+  SignOut,
+  StyledLink,
+} from './header.styles'
+import { ReactComponent as CrwnLogo } from "../../assets/crown.svg"
 
 const Header = () => {
   const { currentUser }: { currentUser: FirebaseUser | null } = useContext(UserContext)
@@ -28,22 +33,22 @@ const Header = () => {
   }
   
   return (
-    <div className="header">
-      <Link to='/' className="logo">
+    <HeaderContainer>
+      <Logo to='/' className="logo">
         <CrwnLogo />
-      </Link>
-      <div className="nav-links-container">
-        <Link className="nav-link" to='/shop'>SHOP</Link>
-        <Link className="nav-link" to='/product'>PRODUCT</Link>
+      </Logo>
+      <NavLinkContainer>
+        <StyledLink to='/shop'>SHOP</StyledLink>
+        <StyledLink to='/product'>PRODUCT</StyledLink>
         { 
           currentUser ? 
-          ( <span className="nav-link" onClick={ signOutHandler }>SIGN OUT</span> )
-          : ( <Link className="nav-link" to='/auth'>SIGN IN</Link> )
+          ( <SignOut onClick={ signOutHandler }>SIGN OUT</SignOut> )
+          : ( <StyledLink to='/auth'>SIGN IN</StyledLink> )
         }
         <CartIcon onClick={cartOpen? closeCart : openCart} />
-      </div>
+      </NavLinkContainer>
       { cartOpen && <CartDropdown /> }
-    </div>
+    </HeaderContainer>
   )
 }
 export default Header

@@ -13,7 +13,10 @@ import {
 import Button from '../button/button.component'
 import FormInput from '../form-input/form-input.component'
 
-import './signup-form.styles.scss'
+import { 
+  SignupContainer,
+  StyledTitle,
+ } from './signup-form.styles'
 
 type FormFields = {
   displayName: string,
@@ -57,8 +60,8 @@ const SignupForm = () => {
   }
 
   return (
-    <div className='signup-container'>
-      <h2>Don't have an account?</h2>
+    <SignupContainer>
+      <StyledTitle>Don't have an account?</StyledTitle>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput 
@@ -94,7 +97,7 @@ const SignupForm = () => {
         />
         <Button>Sign Up</Button>
       </form>
-    </div>
+    </SignupContainer>
   )
 }
 export default SignupForm
