@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import {
   CategoryContainer,
   BackgroundImage,
@@ -12,11 +13,13 @@ export interface Category {
   imageUrl: string,
 }
 
+
 const CategoryItem = (props: {category: Category}) => {
   const category: Category  = props.category
+  const navigate = useNavigate()
 
   return (
-    <CategoryContainer>
+    <CategoryContainer onClick={ () => navigate(`shop/${category.title}`) }>
       <BackgroundImage imageUrl={ category.imageUrl }/>
       <CategoryBodyContainer>
         <StyledH2>{category.title}</StyledH2>
