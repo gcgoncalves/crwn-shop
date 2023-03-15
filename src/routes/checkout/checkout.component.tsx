@@ -12,11 +12,8 @@ import {
 export default function Checkout() {
   const { 
     cartItems, 
+    cartTotal,
   } = useContext(CartContext)
-
-  const totalPrice = cartItems.reduce((total: number, cartItem: CartItem) => {
-    return total + (cartItem.price * cartItem.quantity)
-  }, 0)
 
   return (
     <CheckoutContainer>
@@ -43,7 +40,7 @@ export default function Checkout() {
           )
         )
       }
-      <Total>Total: { totalPrice }</Total>
+      <Total>Total: { `${cartTotal}` }</Total>
     </CheckoutContainer>
   )
 }

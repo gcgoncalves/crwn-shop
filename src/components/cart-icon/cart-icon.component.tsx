@@ -10,13 +10,13 @@ import {
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
 const  CartIcon = (props: Props) => {
-  const { cartItems } = useContext(CartContext)
+  const { cartCount } = useContext(CartContext)
 
   const { ...otherProps } = props
   return (
     <CartIconContainer { ...otherProps }>
       <StyledShoppingBagIcon className='shopping-bag-icon' />
-      <ItemCount className='item-count'>{ cartItems.reduce((quantity, item) => { return quantity + item.quantity }, 0) }</ItemCount>
+      <ItemCount className='item-count'>{ `${cartCount}` }</ItemCount>
     </CartIconContainer>
   )
 }

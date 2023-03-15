@@ -2,19 +2,28 @@ import {
   createContext, 
   Dispatch, 
   ReactNode, 
-  SetStateAction, 
-  useState 
+  useReducer, 
 } from 'react'
 import Product from "../interfaces/product.interface";
+import { Action, createAction } from '../util/recucer/reducer.util';
 
 export interface CartItem extends Product {
   quantity: number
 }
 
-interface CartContextType {
-  cartOpen: boolean,
-  setCartOpen: Dispatch<SetStateAction<boolean>>,
+type CartStateType = {
+  cartOpen: Boolean,
   cartItems: CartItem[],
+  cartCount: Number,
+  cartTotal: Number,
+}
+
+interface CartContextType {
+  cartOpen: Boolean,
+  cartItems: CartItem[],
+  cartCount: Number, 
+  cartTotal: Number,
+  setCartOpen: Function,
   addItemToCart: Function,
   removeItemFromCart: Function,
   removeProductFromCart: Function,
@@ -64,46 +73,88 @@ export const CartContext = createContext({
   cartOpen: false,
   setCartOpen: () => {},
   cartItems: [],
+  cartCount: 0, 
+  cartTotal: 0,
   addItemToCart: () => {},
   removeItemFromCart: () => {},
   removeProductFromCart: () => {},
 } as CartContextType) 
 
+
+
+export const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: 'SET_CART_ITEMS',
+  SET_CART_OPEN: 'SET_CART_OPEN',
+}
+
+const INITIAL_STATE: CartStateType = {
+  cartOpen: false,
+  cartItems: [] as CartItem[],
+  cartCount: 0,
+  cartTotal: 0,
+}
+
+const cartReducer = (state: CartStateType, { type, payload }: Action) => {
+  switch (type) {
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
+      return { 
+        ...state, 
+        ...payload 
+      }
+    case CART_ACTION_TYPES.SET_CART_OPEN:
+      return { 
+        ...state, 
+        cartOpen: payload,
+      }
+    default:
+      throw new Error(`Unhandled type ${type}`)
+  }
+}
+
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [
-    cartOpen, 
-    setCartOpen
-  ]: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>
-  ] = useState(false)
-  const [
-    cartItems, 
-    setCartItems
-  ]: [
-    CartItem[],
-    Dispatch<SetStateAction<CartItem[]>>
-  ] = useState([] as CartItem[])
+  const [{ cartOpen, cartItems, cartCount, cartTotal }, dispatch]: 
+    [CartStateType, Dispatch<Action>] = useReducer(cartReducer, INITIAL_STATE)
 
   const addItemToCart = (product: Product) => {
     const newCartItems: CartItem[] = addItemToCartHandler(product, cartItems)
-    setCartItems(newCartItems)
+    updateCartItemsReducer(newCartItems)
   }
 
   const removeItemFromCart = (product: Product) => {
     const newCartItems: CartItem[] = removeItemFromCartHandler(product, cartItems)
-    setCartItems(newCartItems)
+    updateCartItemsReducer(newCartItems)
   }
 
   const removeProductFromCart = (product: Product) => {
     const newCartItems: CartItem[] = removeProductFromCartHandler(product, cartItems)
-    setCartItems(newCartItems)
+    updateCartItemsReducer(newCartItems)
+  }
+
+  const updateCartItemsReducer = (newCartItems: CartItem[]) => {
+    const cartCount = newCartItems.reduce((count, cartItem) => count + cartItem.quantity, 0)
+    const cartTotal = newCartItems.reduce((total, cartItem) => total + (cartItem.quantity * cartItem.price), 0)
+    dispatch(createAction(CART_ACTION_TYPES.SET_CART_ITEMS, {
+        cartCount,
+        cartTotal,
+        cartItems: newCartItems,
+      }
+    ))
+  }
+
+  const setCartOpen = (open: Boolean) => {
+    dispatch(createAction(
+      CART_ACTION_TYPES.SET_CART_OPEN,
+      open,
+    ))
   }
 
   const value: CartContextType = {
-    cartOpen, 
-    setCartOpen, 
+    cartOpen,
     cartItems, 
+    cartCount, 
+    cartTotal,
+    setCartOpen, 
     addItemToCart, 
     removeItemFromCart,
     removeProductFromCart,

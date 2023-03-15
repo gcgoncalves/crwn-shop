@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from "react"
+import { useContext } from "react"
 import { UserContext } from "../../contexts/user.context"
 import { User as FirebaseUser } from "firebase/auth"
 import { signOutUser } from "../../util/firebase/firebase.util"
@@ -21,8 +21,8 @@ const Header = () => {
     cartOpen, 
     setCartOpen 
   }: { 
-    cartOpen: boolean, 
-    setCartOpen: Dispatch<SetStateAction<boolean>>,
+    cartOpen: Boolean, 
+    setCartOpen: Function,
   } = useContext(CartContext)
 
   const openCart = () => setCartOpen(true)
