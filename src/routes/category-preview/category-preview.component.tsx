@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import ProductCard from "../../components/product-card/product-card.component";
-import { CategoryContext } from "../../contexts/category.context";
-import { CategoryMap } from "../../interfaces/category.interface";
-import Product from "../../interfaces/product.interface";
+import React from "react"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import ProductCard from "../../components/product-card/product-card.component"
+import { selectCategories } from "../../store/category/category.selector"
+import Product from '../../store/category/category.types'
 
 import { ProductsContainer } from './category-preview.styles'
 
 const CategoryPreview = () => {
-  const { categories }: { categories: CategoryMap } = useContext(CategoryContext)
+  const categories = useSelector(selectCategories)
   const categoryNames: string[] = Object.keys(categories)
 
   return (
@@ -33,4 +33,4 @@ const CategoryPreview = () => {
   )
 }
 
-export default CategoryPreview;
+export default CategoryPreview

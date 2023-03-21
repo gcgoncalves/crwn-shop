@@ -1,4 +1,4 @@
-import { CategoryCollection } from './interfaces/category.interface'
+import { CategoryCollection } from "./store/category/category.types"
 
 const SHOP_DATA: CategoryCollection[] = [
   {

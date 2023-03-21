@@ -1,5 +1,6 @@
-import { ComponentPropsWithoutRef, useContext } from 'react'
-import { CartContext } from '../../contexts/cart.context'
+import { ComponentPropsWithoutRef } from 'react'
+import { useSelector } from 'react-redux'
+import { selectCartCount } from '../../store/cart/cart.selector'
 
 import {
   CartIconContainer,
@@ -10,7 +11,7 @@ import {
 interface Props extends ComponentPropsWithoutRef<"div"> {}
 
 const  CartIcon = (props: Props) => {
-  const { cartCount } = useContext(CartContext)
+  const cartCount = useSelector(selectCartCount)
 
   const { ...otherProps } = props
   return (

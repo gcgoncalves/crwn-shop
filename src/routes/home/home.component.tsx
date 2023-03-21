@@ -8,7 +8,7 @@ const Home = () => {
       <Header />
       <Outlet />
     </React.Fragment>
-  );
+  )
 }
 
 export default Home

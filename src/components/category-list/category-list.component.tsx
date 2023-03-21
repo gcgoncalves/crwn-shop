@@ -1,5 +1,5 @@
 import { Category } from '../category-item/category-item.component'
-import CategoryItem from '../category-item/category-item.component';
+import CategoryItem from '../category-item/category-item.component'
 import { CategoryListContainer } from './category-list.styles'
 
 const CategoryList = (props: {categories: Category[]}) => {

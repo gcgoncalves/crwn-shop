@@ -1,10 +1,6 @@
-import { useContext } from "react"
-import { UserContext } from "../../contexts/user.context"
-import { User as FirebaseUser } from "firebase/auth"
 import { signOutUser } from "../../util/firebase/firebase.util"
 import CartDropdown from "../cart-dropdown/cart-dropdown.component"
 import CartIcon from "../cart-icon/cart-icon.component"
-import { CartContext } from "../../contexts/cart.context"
 
 import {
   HeaderContainer,
@@ -14,19 +10,19 @@ import {
   StyledLink,
 } from './header.styles'
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg"
+import { useSelector } from "react-redux"
+import { selectCurrentUser } from "../../store/user/user.selector"
+import { useDispatch } from "react-redux"
+import { selectCartOpen } from "../../store/cart/cart.selector"
+import { setCartOpen } from "../../store/cart/cart.action"
 
 const Header = () => {
-  const { currentUser }: { currentUser: FirebaseUser | null } = useContext(UserContext)
-  const { 
-    cartOpen, 
-    setCartOpen 
-  }: { 
-    cartOpen: Boolean, 
-    setCartOpen: Function,
-  } = useContext(CartContext)
-
-  const openCart = () => setCartOpen(true)
-  const closeCart = () => setCartOpen(false)
+  const dispatch = useDispatch()
+  const currentUser = useSelector(selectCurrentUser)
+  const cartOpen = useSelector(selectCartOpen)
+  
+  const openCart = () => dispatch(setCartOpen(true))
+  const closeCart = () => dispatch(setCartOpen(false))
 
   const signOutHandler = async () => {
     await signOutUser()

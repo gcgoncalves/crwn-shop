@@ -4,34 +4,34 @@ import {
   createUserWithEmailAndPassword,
   getAuth, 
   GoogleAuthProvider,
-  signInWithPopup, 
+  NextOrObserver,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup, 
+  signOut,
   User as FirebaseUser,
   UserCredential,
-  signOut,
-  onAuthStateChanged,
-  NextOrObserver,
 } from 'firebase/auth'
 import {
-  doc,
-  getDoc,
-  setDoc,
-  DocumentReference,
-  DocumentData,
-  getFirestore,
   collection,
+  CollectionReference,
+  doc,
+  DocumentData,
+  DocumentReference,
+  Firestore,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  Query,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  setDoc,
   writeBatch,
   WriteBatch,
-  CollectionReference,
-  Firestore,
-  query,
-  getDocs,
-  Query,
-  QuerySnapshot,
 } from 'firebase/firestore'
-import Product from "../../interfaces/product.interface";
 import firebaseConfig from '../../firebase.config.json'
-import { CategoryCollection, CategoryMap } from "../../interfaces/category.interface"
+import { Category, CategoryCollection } from "../../store/category/category.types"
 
 initializeApp(firebaseConfig)
 
@@ -99,22 +99,12 @@ export const addCollectionOfCategories = async (collectionKey: string, Categorie
   console.log('done')
 }
 
-export const getCategories = async () => {
+export const getCategories = async (): Promise<Category[]> => {
   const collectionReference: CollectionReference<DocumentData> = collection(db, 'categories')
   const q: Query<DocumentData> = query(collectionReference)
   
   const snapshot: QuerySnapshot<DocumentData> = await getDocs(q)
-  const categoryMap: CategoryMap = snapshot.docs.reduce((accumulator, documentSnapshot) => {
-    const { 
-      title, 
-      items, 
-    }: {
-      title: string,
-      items: Product[],
-    } = documentSnapshot.data() as CategoryCollection
-    accumulator[title.toLowerCase()] = items
-    return accumulator
-  }, {} as CategoryMap)
-
-  return categoryMap
+  return snapshot.docs.map(
+    (documentSnapshot: QueryDocumentSnapshot<DocumentData>) => documentSnapshot.data()
+  ) as Category[]
 }
