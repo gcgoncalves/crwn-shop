@@ -59,9 +59,9 @@ export const signOutUser = () => signOut(auth)
 export const onAuthStateChangedListener = (callback: NextOrObserver<FirebaseUser | null>) => onAuthStateChanged(auth, callback)
 
 export const createUserDocumentFromAuth = async (
-                                                  userAuth: FirebaseUser, 
-                                                  additionalInformation: { displayName?: string } = {}
-                                                ): Promise<DocumentReference> => {
+  userAuth: FirebaseUser, 
+  additionalInformation: { displayName?: string } = {}
+): Promise<DocumentData> => {
   const userDocumentReference: DocumentReference = await doc(db, 'users', userAuth.uid)
   const userSnapshot: DocumentData = await getDoc(userDocumentReference)
     
@@ -81,7 +81,8 @@ export const createUserDocumentFromAuth = async (
     }
   }
   
-  return userDocumentReference
+  // return userDocumentReference
+  return userSnapshot
 }
 
 // DATABASE
@@ -107,4 +108,18 @@ export const getCategories = async (): Promise<Category[]> => {
   return snapshot.docs.map(
     (documentSnapshot: QueryDocumentSnapshot<DocumentData>) => documentSnapshot.data()
   ) as Category[]
+}
+
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe()
+        resolve(user)
+      },
+      reject
+    )
+  })
 }

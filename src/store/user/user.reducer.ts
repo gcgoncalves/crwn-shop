@@ -2,7 +2,7 @@ import { Action } from "../../util/recucer/reducer.util"
 import { UserState, USER_ACTION_TYPES } from "./user.types"
 
 const INITIAL_STATE: UserState = {
-  currentUser: null
+  currentUser: null,
 }
 
 export const userReducer = (state: UserState = INITIAL_STATE, action: Action): UserState => {
@@ -13,6 +13,17 @@ export const userReducer = (state: UserState = INITIAL_STATE, action: Action): U
       return {
         ...state,
         currentUser: payload
+      }
+    case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
+      return {
+        ...state,
+        currentUser: payload,
+        error: null,
+      }
+    case USER_ACTION_TYPES.SIGN_IN_FAILED:
+      return {
+        ...state,
+        error: payload
       }
     default:
       return state
