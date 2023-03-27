@@ -33,7 +33,7 @@ import {
 import firebaseConfig from '../../firebase.config.json'
 import { Category, CategoryCollection } from "../../store/category/category.types"
 
-initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
 const googleProvider: GoogleAuthProvider = new GoogleAuthProvider()
 googleProvider.setCustomParameters({
@@ -43,7 +43,7 @@ export const db: Firestore = getFirestore()
 
 // AUTHENTICATION
 
-export const auth: Auth = getAuth()
+export const auth: Auth = getAuth(app)
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string): Promise<UserCredential> => {
   return await createUserWithEmailAndPassword(auth, email, password)

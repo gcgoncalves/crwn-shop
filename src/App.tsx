@@ -44,14 +44,6 @@ function App() {
 
   useEffect(() => {
     dispatch(getCurrentUser())
-    // const listener : NextFn<FirebaseUser | null> = (user: FirebaseUser | null) => {
-    //   if (user) {
-    //     createUserDocumentFromAuth(user)
-    //   }
-    //   dispatch(setCurrentUser(user))
-    // }
-    // const unsubscribe = onAuthStateChangedListener(listener)
-    // return unsubscribe
   }, [dispatch])
 
   return (
