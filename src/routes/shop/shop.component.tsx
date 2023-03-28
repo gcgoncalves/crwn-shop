@@ -1,12 +1,13 @@
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
 import { 
   Route, 
   Routes,
 } from "react-router-dom"
-import { fetchCategoriesStart } from "../../store/category/category.action"
 import CategoryPreview from "../category-preview/category-preview.component"
 import Category from "../category/category.component"
+import { setCategories } from "../../store/category/category.action"
+import { Category as CategoryType } from "../../store/category/category.types"
+import { getCategories } from "../../util/firebase/firebase.util"
 import { useAppDispatch } from "../../store/store.hooks"
 
 
@@ -14,7 +15,10 @@ const Shop = () => {
   const dispatch = useAppDispatch()
   
   useEffect(() => {
-    dispatch(fetchCategoriesStart() as any)
+    (async () => {
+      const categories: CategoryType[] = await getCategories()
+      dispatch(setCategories(categories))
+    })()
   }, [dispatch])
 
   return (

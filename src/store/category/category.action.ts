@@ -19,12 +19,12 @@ export const fetchCategoriesFailed = (error: unknown) => {
   return createAction(CATEGORY_ACTION_TYPES.FETCH_CATEGORIES_FAILED, error)
 }
 
-// export const fetchCategoriesAsync = () => async (dispatch: Dispatch) => {
-//   dispatch(fetchCategoriesStart())
-//   try {
-//     const categories = await getCategories()
-//     dispatch(fetchCategoriesSuccess(categories))
-//   } catch(error: unknown) {
-//     dispatch(fetchCategoriesFailed(error))
-//   }
-// }
+export const fetchCategoriesAsync = () => async (dispatch: Dispatch) => {
+  dispatch(fetchCategoriesStart())
+  try {
+    const categories = await getCategories()
+    dispatch(fetchCategoriesSuccess(categories))
+  } catch(error: unknown) {
+    dispatch(fetchCategoriesFailed(error))
+  }
+}
