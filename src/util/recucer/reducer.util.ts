@@ -3,7 +3,7 @@ export type Action = {
   payload: any,
 }
 
-export const createAction = (type: string, payload: any = null): Action => {
+export const createAction = (type: string, payload: any): Action => {
   return {
     type,
     payload

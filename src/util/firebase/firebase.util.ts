@@ -33,7 +33,7 @@ import {
 import firebaseConfig from '../../firebase.config.json'
 import { Category, CategoryCollection } from "../../store/category/category.types"
 
-const app = initializeApp(firebaseConfig)
+initializeApp(firebaseConfig)
 
 const googleProvider: GoogleAuthProvider = new GoogleAuthProvider()
 googleProvider.setCustomParameters({
@@ -43,7 +43,7 @@ export const db: Firestore = getFirestore()
 
 // AUTHENTICATION
 
-export const auth: Auth = getAuth(app)
+export const auth: Auth = getAuth()
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string): Promise<UserCredential> => {
   return await createUserWithEmailAndPassword(auth, email, password)
@@ -59,9 +59,9 @@ export const signOutUser = () => signOut(auth)
 export const onAuthStateChangedListener = (callback: NextOrObserver<FirebaseUser | null>) => onAuthStateChanged(auth, callback)
 
 export const createUserDocumentFromAuth = async (
-  userAuth: FirebaseUser, 
-  additionalInformation: { displayName?: string } = {}
-): Promise<DocumentData> => {
+                                                  userAuth: FirebaseUser, 
+                                                  additionalInformation: { displayName?: string } = {}
+                                                ): Promise<DocumentReference> => {
   const userDocumentReference: DocumentReference = await doc(db, 'users', userAuth.uid)
   const userSnapshot: DocumentData = await getDoc(userDocumentReference)
     
@@ -81,8 +81,7 @@ export const createUserDocumentFromAuth = async (
     }
   }
   
-  // return userDocumentReference
-  return userSnapshot
+  return userDocumentReference
 }
 
 // DATABASE
@@ -108,18 +107,4 @@ export const getCategories = async (): Promise<Category[]> => {
   return snapshot.docs.map(
     (documentSnapshot: QueryDocumentSnapshot<DocumentData>) => documentSnapshot.data()
   ) as Category[]
-}
-
-
-export const getCurrentUser = () => {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (user) => {
-        unsubscribe()
-        resolve(user)
-      },
-      reject
-    )
-  })
 }

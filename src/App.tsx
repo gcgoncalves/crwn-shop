@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 import { Routes,  Route } from "react-router-dom"
+import { User as FirebaseUser } from "firebase/auth"
+import { NextFn } from "firebase/auth"
 
 import Authentication from "./routes/authentication/authentication.component"
 import { Category } from "./components/category-item/category-item.component"
@@ -8,8 +10,9 @@ import Checkout from "./routes/checkout/checkout.component"
 import Home from "./routes/home/home.component"
 import ProductDetails from "./routes/product-details/product-details.component"
 import Shop from "./routes/shop/shop.component"
+import { createUserDocumentFromAuth,  onAuthStateChangedListener } from "./util/firebase/firebase.util"
 import { useDispatch } from "react-redux"
-import { getCurrentUser } from "./store/user/user.action"
+import { setCurrentUser } from "./store/user/user.action"
 
 const startingCategories: Category[] = [
   {
@@ -43,7 +46,14 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getCurrentUser())
+    const listener : NextFn<FirebaseUser | null> = (user: FirebaseUser | null) => {
+      if (user) {
+        createUserDocumentFromAuth(user)
+      }
+      dispatch(setCurrentUser(user))
+    }
+    const unsubscribe = onAuthStateChangedListener(listener)
+    return unsubscribe
   }, [dispatch])
 
   return (
