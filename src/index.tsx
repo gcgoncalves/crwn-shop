@@ -2,13 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import reportWebVitals from './reportWebVitals'
+import { PersistGate } from 'redux-persist/integration/react'
+import { Elements } from '@stripe/react-stripe-js'
+import { stripePromise } from './util/stripe/stripe.util'
 import App from './App'
 
 import { Provider } from 'react-redux'
 import { persistor, store } from './store/store'
 
 import './index.scss'
-import { PersistGate } from 'redux-persist/integration/react'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,7 +20,9 @@ root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
         <BrowserRouter>
-          <App />
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
         </BrowserRouter>
       </PersistGate>
     </Provider>

@@ -2,7 +2,8 @@ import { FC, ButtonHTMLAttributes } from "react"
 import { 
   PrimaryButton, 
   SecondaryButton, 
-  InvertedButton 
+  InvertedButton, 
+  ButtonSpinner
 } from './button.styles'
 
 export enum BUTTON_TYPE_CLASSES {
@@ -12,7 +13,8 @@ export enum BUTTON_TYPE_CLASSES {
 } 
 
 export type ButtonProps = {
-  buttonType?: BUTTON_TYPE_CLASSES
+  buttonType?: BUTTON_TYPE_CLASSES,
+  loading?: boolean,
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 const getButton = (buttonType = BUTTON_TYPE_CLASSES.primary): typeof PrimaryButton =>
@@ -23,12 +25,17 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.primary): typeof PrimaryButt
   }[buttonType])
 
 const Button: FC<ButtonProps> = (props: ButtonProps) => {
-  const { buttonType, ...otherProps } = props
+  const { 
+    buttonType, 
+    children, 
+    loading, 
+    ...otherProps 
+  } = props
   const CustomButton = getButton(buttonType)
   return (
-    <CustomButton 
-      {...otherProps}
-    />
+    <CustomButton {...otherProps}>
+      { loading ? <ButtonSpinner /> : children}
+    </CustomButton>
   )
 }
 
